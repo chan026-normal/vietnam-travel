@@ -17,7 +17,7 @@ if "login_time" not in st.session_state:
     st.session_state.login_time = time.time()
 
 # 30분 지나면 로그아웃
-if time.time() - st.session_state.login_time > 1800:
+if time.time() - st.session_state.login_time > 300:
     st.session_state.clear()
     st.warning("세션이 만료됐어요. 다시 로그인해주세요.")
     st.stop()
