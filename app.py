@@ -2,21 +2,20 @@ import os
 import time
 from openai import OpenAI
 import streamlit as st
-import streamlit as st
 
-# 비밀번호 설정
-password = st.text_input("비밀번호를 입력하세요", type="password")
-if password != st.secrets["APP_PASSWORD"]:
+# 비밀번호 확인
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    password = st.text_input("비밀번호를 입력하세요", type="password")
+    if password == st.secrets["APP_PASSWORD"]:
+        st.session_state.authenticated = True
+        st.session_state.login_time = time.time()
+        st.rerun()
     st.stop()
 
-# 비밀번호 맞으면 입력창 숨기기
-st.empty()
-
-# 로그인 시간 기록
-if "login_time" not in st.session_state:
-    st.session_state.login_time = time.time()
-
-# 30분 지나면 로그아웃
+# 세션 만료 확인
 if time.time() - st.session_state.login_time > 300:
     st.session_state.clear()
     st.warning("세션이 만료됐어요. 다시 로그인해주세요.")
