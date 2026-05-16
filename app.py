@@ -1,4 +1,5 @@
 import os
+import time
 from openai import OpenAI
 import streamlit as st
 import streamlit as st
@@ -10,6 +11,16 @@ if password != st.secrets["APP_PASSWORD"]:
 
 # 비밀번호 맞으면 입력창 숨기기
 st.empty()
+
+# 로그인 시간 기록
+if "login_time" not in st.session_state:
+    st.session_state.login_time = time.time()
+
+# 30분 지나면 로그아웃
+if time.time() - st.session_state.login_time > 1800:
+    st.session_state.clear()
+    st.warning("세션이 만료됐어요. 다시 로그인해주세요.")
+    st.stop()
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
