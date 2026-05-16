@@ -13,6 +13,8 @@ if not st.session_state.authenticated:
         st.session_state.authenticated = True
         st.session_state.login_time = time.time()
         st.rerun()
+    elif password != "":
+        st.error("비밀번호가 틀립니다.")
     st.stop()
 
 # 세션 만료 확인
@@ -26,12 +28,23 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 st.title("🇻🇳 A조 베트남 AI 여행 가이드")
 st.caption("하노이, 호치민, 다낭 등 베트남 여행 정보를 물어보세요!")
 
+# 채팅 횟수 제한
+MAX_MESSAGES = 10
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+# 남은 횟수 표시
+remaining = MAX_MESSAGES - len([m for m in st.session_state.messages if m["role"] == "user"])
+st.caption(f"남은 질문 횟수: {remaining}/{MAX_MESSAGES}")
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
+
+# 횟수 초과 확인
+if remaining <= 0:
+    st.warning("질문 횟수를 모두 사용했어요.")
+    st.stop()
 
 if prompt := st.chat_input("예: 하노이 3박 4일 일정 짜줘"):
     st.session_state.messages.append({"role": "user", "content": prompt})
