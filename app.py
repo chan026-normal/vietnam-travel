@@ -14,7 +14,7 @@ if not st.session_state.authenticated:
         st.session_state.login_time = time.time()
         st.rerun()
     elif password != "":
-        st.error("비밀번호가 틀립니다.")
+        st.error("비밀번호 그거 아니에요.")
     st.stop()
 
 # 세션 만료 확인
