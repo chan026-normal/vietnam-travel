@@ -1,7 +1,13 @@
 import os
 from openai import OpenAI
 import streamlit as st
+import streamlit as st
 
+# 비밀번호 설정
+password = st.text_input("비밀번호를 입력하세요", type="password")
+if password != st.secrets["APP_PASSWORD"]:
+    st.stop()
+    
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("🇻🇳 A조 베트남 AI 여행 가이드")
