@@ -64,3 +64,5 @@ if prompt := st.chat_input("예: 하노이 3박 4일 일정 짜줘"):
             st.write(reply)
 
     st.session_state.messages.append({"role": "assistant", "content": reply})
+
+st.rerun()
