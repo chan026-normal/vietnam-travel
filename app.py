@@ -1,11 +1,8 @@
-from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import streamlit as st
 
-load_dotenv()
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("🇻🇳 A조 베트남 AI 여행 가이드")
 st.caption("하노이, 호치민, 다낭 등 베트남 여행 정보를 물어보세요!")
